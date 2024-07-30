@@ -331,6 +331,17 @@ class CriteriaCompletionChecker {
       const eventKeyItems = filteredLocalDataKeys.filter(
         (keyItem) => keyItem === field
       );
+
+      if (field.includes('.')) {
+        const valueFromObj = this.getValueFromNestedObject(eventData, field);
+        if (valueFromObj) {
+          return this.evaluateComparison(
+            query.comparatorType,
+            valueFromObj,
+            query.value ? query.value : ''
+          );
+        }
+      }
       if (eventKeyItems.length) {
         return this.evaluateComparison(
           query.comparatorType,
@@ -341,6 +352,29 @@ class CriteriaCompletionChecker {
       return false;
     });
     return matchResult;
+  }
+
+  private getValueFromNestedObject(eventData: any, field: string): any {
+    const valueFromObj = this.getFieldValue(eventData, field);
+    if (typeof valueFromObj === 'object') {
+      const keys = Object.keys(valueFromObj);
+      for (let i = 0; i < keys.length; i++) {
+        return this.getValueFromNestedObject(valueFromObj, keys[i]);
+      }
+    } else {
+      return valueFromObj;
+    }
+  }
+
+  private getFieldValue(data: any, field: string): any {
+    const fields = field.split('.');
+    let value = data;
+    for (let i = 0; i < fields.length; i++) {
+      if (value[fields[i]] !== undefined) {
+        value = value[fields[i]];
+      }
+    }
+    return value;
   }
 
   private doesItemMatchQueries(item: any, searchQueries: any[]): boolean {
