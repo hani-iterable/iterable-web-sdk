@@ -328,11 +328,8 @@ class CriteriaCompletionChecker {
           return true;
         }
       }
-      const eventKeyItems = filteredLocalDataKeys.filter(
-        (keyItem) => keyItem === field
-      );
 
-      if (field.includes('.')) {
+      if (field.includes('.') && query.comparatorType !== 'IsSet') {
         const valueFromObj = this.getValueFromNestedObject(eventData, field);
         if (valueFromObj) {
           return this.evaluateComparison(
@@ -342,6 +339,10 @@ class CriteriaCompletionChecker {
           );
         }
       }
+      const eventKeyItems = filteredLocalDataKeys.filter(
+        (keyItem) => keyItem === field
+      );
+
       if (eventKeyItems.length) {
         return this.evaluateComparison(
           query.comparatorType,
