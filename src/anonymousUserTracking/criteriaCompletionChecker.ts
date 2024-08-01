@@ -329,7 +329,7 @@ class CriteriaCompletionChecker {
         }
       }
 
-      if (field.includes('.') && query.comparatorType !== 'IsSet') {
+      if (field.includes('.')) {
         const valueFromObj = this.getValueFromNestedObject(eventData, field);
         if (valueFromObj) {
           return this.evaluateComparison(
