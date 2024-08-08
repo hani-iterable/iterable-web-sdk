@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, FormEvent, useState } from 'react';
 import {
   updateCart,
@@ -39,7 +40,7 @@ export const AUTTesting: FC<Props> = () => {
   const [isUpdatingCart, setUpdatingCart] = useState<boolean>(false);
   const [isTrackingPurchase, setTrackingPurchase] = useState<boolean>(false);
   const [userDataField, setUserDataField] = useState<string>(
-    ' { "dataFields": {"phone_number": "57688559", "subscribed": true }}'
+    ' { "dataFields": {"phoneNumber": "5768855911", "subscribed": true }}'
   );
   const [isUpdatingUser, setUpdatingUser] = useState<boolean>(false);
   const [updateUserResponse, setUpdateUserResponse] = useState<string>(
