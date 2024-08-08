@@ -1,12 +1,5 @@
 import { FC, FormEvent, useState } from 'react';
 import {
-  Button,
-  EndpointWrapper,
-  Form,
-  Heading,
-  Response
-} from '../views/Components.styled';
-import {
   IterableEmbeddedManager,
   IterableEmbeddedMessageUpdateHandler,
   trackEmbeddedSession,
@@ -14,11 +7,17 @@ import {
   trackEmbeddedClick,
   trackEmbeddedDismiss
 } from '@iterable/web-sdk';
-import TextField from 'src/components/TextField';
 import { v4 as uuidv4 } from 'uuid';
+import { TextField } from './TextField';
+import {
+  StyledButton,
+  EndpointWrapper,
+  Form,
+  Heading,
+  Response
+} from '../views/Components.styled';
 
 interface Props {
-  userId: string;
   endpointName: string;
   heading: string;
   needsInputField?: boolean;
@@ -32,7 +31,6 @@ export const TYPE_DISMISS = 3;
 export const TYPE_SESSION = 4;
 
 export const EmbeddedForm: FC<Props> = ({
-  userId,
   endpointName,
   heading,
   needsInputField,
@@ -65,7 +63,7 @@ export const EmbeddedForm: FC<Props> = ({
       await embeddedManager.syncMessages('my-website', () =>
         console.log('Synced message')
       );
-    } catch (error: any) {
+    } catch (error: any /* eslint-disable-line @typescript-eslint/no-explicit-any */) {
       setTrackResponse(JSON.stringify(error?.response?.data));
     }
   };
@@ -77,19 +75,27 @@ export const EmbeddedForm: FC<Props> = ({
     setTrackingEvent(true);
 
     const receivedMessage = {
-      messageId: messageId,
+      messageId,
       appPackageName: 'my-lil-site'
     };
 
     trackEmbeddedReceived(receivedMessage.messageId, 'my-website')
-      .then((response: any) => {
-        setTrackResponse(JSON.stringify(response.data));
-        setTrackingEvent(false);
-      })
-      .catch((error: any) => {
-        setTrackResponse(JSON.stringify(error.response.data));
-        setTrackingEvent(false);
-      });
+      .then(
+        (
+          response: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ) => {
+          setTrackResponse(JSON.stringify(response.data));
+          setTrackingEvent(false);
+        }
+      )
+      .catch(
+        (
+          error: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ) => {
+          setTrackResponse(JSON.stringify(error.response.data));
+          setTrackingEvent(false);
+        }
+      );
   };
 
   const submitEmbeddedMessagesClickEvent = async (
@@ -99,7 +105,7 @@ export const EmbeddedForm: FC<Props> = ({
     setTrackingEvent(true);
 
     const payload = {
-      messageId: messageId,
+      messageId,
       campaignId: 1
     };
 
@@ -113,14 +119,22 @@ export const EmbeddedForm: FC<Props> = ({
       targetUrl,
       appPackageName
     })
-      .then((response: any) => {
-        setTrackResponse(JSON.stringify(response.data));
-        setTrackingEvent(false);
-      })
-      .catch((error: any) => {
-        setTrackResponse(JSON.stringify(error.response.data));
-        setTrackingEvent(false);
-      });
+      .then(
+        (
+          response: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ) => {
+          setTrackResponse(JSON.stringify(response.data));
+          setTrackingEvent(false);
+        }
+      )
+      .catch(
+        (
+          error: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ) => {
+          setTrackResponse(JSON.stringify(error.response.data));
+          setTrackingEvent(false);
+        }
+      );
   };
 
   const submitEmbeddedMessagesDismissEvent = async (
@@ -130,7 +144,7 @@ export const EmbeddedForm: FC<Props> = ({
     setTrackingEvent(true);
 
     const sessionData = {
-      messageId: messageId,
+      messageId,
       buttonIdentifier: '123',
       deviceInfo: {
         deviceId: '123',
@@ -141,14 +155,22 @@ export const EmbeddedForm: FC<Props> = ({
     };
 
     trackEmbeddedDismiss(sessionData)
-      .then((response: any) => {
-        setTrackResponse(JSON.stringify(response.data));
-        setTrackingEvent(false);
-      })
-      .catch((error: any) => {
-        setTrackResponse(JSON.stringify(error.response.data));
-        setTrackingEvent(false);
-      });
+      .then(
+        (
+          response: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ) => {
+          setTrackResponse(JSON.stringify(response.data));
+          setTrackingEvent(false);
+        }
+      )
+      .catch(
+        (
+          error: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ) => {
+          setTrackResponse(JSON.stringify(error.response.data));
+          setTrackingEvent(false);
+        }
+      );
   };
 
   const submitEmbeddedSessionEvent = async (e: FormEvent<HTMLFormElement>) => {
@@ -163,7 +185,7 @@ export const EmbeddedForm: FC<Props> = ({
       },
       impressions: [
         {
-          messageId: messageId,
+          messageId,
           displayCount: 1,
           displayDuration: 1000
         }
@@ -179,14 +201,22 @@ export const EmbeddedForm: FC<Props> = ({
     };
 
     trackEmbeddedSession(sessionData)
-      .then((response: any) => {
-        setTrackResponse(JSON.stringify(response.data));
-        setTrackingEvent(false);
-      })
-      .catch((error: any) => {
-        setTrackResponse(JSON.stringify(error.response.data));
-        setTrackingEvent(false);
-      });
+      .then(
+        (
+          response: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ) => {
+          setTrackResponse(JSON.stringify(response.data));
+          setTrackingEvent(false);
+        }
+      )
+      .catch(
+        (
+          error: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+        ) => {
+          setTrackResponse(JSON.stringify(error.response.data));
+          setTrackingEvent(false);
+        }
+      );
   };
 
   const handleTrack = (e: FormEvent<HTMLFormElement>, type: number) => {
@@ -224,14 +254,12 @@ export const EmbeddedForm: FC<Props> = ({
               />
             </>
           )}
-          <Button disabled={isTrackingEvent} type="submit">
+          <StyledButton disabled={isTrackingEvent} type="submit">
             Submit
-          </Button>
+          </StyledButton>
         </Form>
         <Response {...responseAttr}>{trackResponse}</Response>
       </EndpointWrapper>
     </>
   );
 };
-
-export default EmbeddedForm;

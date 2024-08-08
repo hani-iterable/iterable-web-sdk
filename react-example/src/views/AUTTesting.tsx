@@ -1,13 +1,4 @@
 import { FC, FormEvent, useState } from 'react';
-import TextField from 'src/components/TextField';
-import {
-  Button,
-  EndpointWrapper,
-  Form,
-  Heading,
-  Response
-} from './Components.styled';
-
 import {
   updateCart,
   trackPurchase,
@@ -18,6 +9,14 @@ import {
   track,
   InAppTrackRequestParams
 } from '@iterable/web-sdk';
+import { TextField } from '../components/TextField';
+import {
+  Button,
+  EndpointWrapper,
+  Form,
+  Heading,
+  Response
+} from './Components.styled';
 
 interface Props {}
 
@@ -62,16 +61,16 @@ export const AUTTesting: FC<Props> = () => {
       if (isUpdateCartCalled) {
         const parsedObject = JSON.parse(cartItem) as UpdateCartRequestParams;
         return parsedObject;
-      } else {
-        const parsedObject = JSON.parse(
-          purchaseItem
-        ) as TrackPurchaseRequestParams;
-        return parsedObject;
       }
+      const parsedObject = JSON.parse(
+        purchaseItem
+      ) as TrackPurchaseRequestParams;
+      return parsedObject;
     } catch (error) {
-      if (isUpdateCartCalled)
+      if (isUpdateCartCalled) {
         setUpdateCartResponse(JSON.stringify(error.message));
-      else setTrackPurchaseResponse(JSON.stringify(error.message));
+      } else setTrackPurchaseResponse(JSON.stringify(error.message));
+      return error;
     }
   };
 
@@ -81,6 +80,7 @@ export const AUTTesting: FC<Props> = () => {
       return JSON.parse(userDataField) as UpdateUserParams;
     } catch (error) {
       setUpdateUserResponse(JSON.stringify(error.message));
+      return error;
     }
   };
 
@@ -157,6 +157,7 @@ export const AUTTesting: FC<Props> = () => {
       return parsedObject;
     } catch (error) {
       setTrackResponse(JSON.stringify(error.message));
+      return error;
     }
   };
 
@@ -194,9 +195,9 @@ export const AUTTesting: FC<Props> = () => {
     }
   };
 
-  const formAttr = { ['data-qa-track-submit']: true };
-  const inputAttr = { ['data-qa-track-input']: true };
-  const responseAttr = { ['data-qa-track-response']: true };
+  const formAttr = { 'data-qa-track-submit': true };
+  const inputAttr = { 'data-qa-track-input': true };
+  const responseAttr = { 'data-qa-track-response': true };
 
   return (
     <>
